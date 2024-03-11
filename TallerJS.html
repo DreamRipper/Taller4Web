@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    
+<style>
+
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+form {
+  width: 300px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+input, select {
+  width: auto;
+  padding: 5px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: rgb(106, 5, 177);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.hidden{
+    display: none;
+}
+</style>
+</head>
+<body>
+
+  <script>
+    var ccpaswd = document.getElementById(ccpaswd);
+    var ccpaswd2 = document.getElementById(ccpaswd2);
+
+    function validateInput(input) {
+      var value = input.value;
+      var maxLength = input.maxLength;
+    
+      if ((value != "" && !isNumeric(value)) || value.length > maxLength) {
+        alert("Por favor, ingresa un número de hasta " + maxLength + " dígitos.");
+        input.value = input.value.slice(0, value.length-1); 
+      }
+    }
+    
+    function isNumeric(value) {
+      return /^\d+$/.test(value);
+    }
+
+    function validatePassword(input){
+        if(/[A-Z]/.test(input) != true || /[0-9]/.test(input) != true || /[#,%,/,&]/.test(input) != true ){
+            alert("La contraseña debe contener mayúsculas, números y al menos uno de los siguientes carácteres: #,%,/,&\n");
+            return false;
+            
+        }
+        return true;
+    }
+
+    function equal(){
+        if(ccpaswd != ccpasw2){
+            alert("Las contraseñas no coinciden.\n");
+            return false;
+        }
+        return true;
+    }
+
+    function show(radio){
+        var seccionGustos = document.getElementById('seccionGustos');
+        if(radio == '1'){
+            seccionGustos.classList.remove("hidden");
+        }
+        else{
+            seccionGustos.classList.add("hidden");
+        }
+    }
+
+    function updateMinMax(input) {
+        var value = input.value.split(',');
+        var minValue = value[0];
+        var maxValue = value[1];
+        document.getElementById('minValue').textContent = minValue;
+        document.getElementById('maxValue').textContent = maxValue;
+    }
+    </script>
+
+<h2>Formulario de Registro</h2>
+
+<form action="TallerJS.html" method="post" onsubmit="return validatePassword() && equal()">
+  <label for="id_usr">ID Usuario</label><br>
+  <input type="text" id="id_usr" name="id_usr" maxlength="11" oninput="validateInput(this)">
+  <br>
+  <label for="id_pais">ID País</label><br>
+  <select id="id_pais" name="id_pais">
+        <option value="1">Colombia</option>
+        <option value="2">Argentina</option>
+        <option value="3">Venezuela</option>
+        <option value="4">Perú</option>
+        <option value="5">Chile</option>
+        <option value="6">Ecuador</option>
+        <option value="7">Brasil</option>
+        <option value="8">Bolivia</option>
+        <option value="9">Paraguay</option>
+        <option value="10">Uruguay</option>
+        <option value="11">México</option>
+        <option value="12">Estados Unidos</option>
+        <option value="13">Canadá</option>
+        <option value="14">España</option>
+        <option value="15">Portugal</option>
+        <option value="16">Francia</option>
+        <option value="17">Italia</option>
+        <option value="18">Alemania</option>
+        <option value="19">Reino Unido</option>
+        <option value="20">Irlanda</option>
+        <option value="21">Países Bajos</option>
+        <option value="22">Bélgica</option>
+        <option value="23">Luxemburgo</option>
+        <option value="24">Suiza</option>
+        <option value="25">Austria</option>
+        <option value="26">Suecia</option>
+        <option value="27">Noruega</option>
+        <option value="28">Dinamarca</option>
+        <option value="29">Finlandia</option>
+        <option value="30">Polonia</option>
+  </select>
+  <br>
+  <label for="nombre">Nombre</label><br>
+  <input type="text" id="nombre" name="nombre" maxlength="25">
+  <br>
+  <label for="apellido">Apellido</label><br>
+  <input type="text" id="apellido" name="apellido" maxlength="25">
+  <br>
+  <label for="direccion">Direccion</label><br>
+  <input type="text" id="direccion" name="direccion" maxlength="45">
+  <br>
+  <label for="ccusuario">Cedula Usuario</label><br>
+  <input type="text" id="ccusuario" name="ccusuario" maxlength="20">
+  <br>
+  <label for="ccpaswd">Contraseña</label><br>
+  <input type="password" id="ccpaswd" name="ccpaswd" maxlength="20"minlength='15' required>
+  <br>
+  <label for="ccpaswd2">Confirmar Contraseña</label><br>
+  <input type="password" id="ccpaswd2" name="ccpaswd2" maxlength="20"minlength='15' required>
+  <br>
+  <label for="ccusuario">Email</label><br>
+  <input type="email" id="ccusuario" name="ccusuario" maxlength="120" required>
+  <br>
+  <label for="telefono">Teléfono</label><br>
+  <input type="text" id="telefono" name="telefono" maxlength="20">
+  <br>
+  ¿Desea registrar sus gustos?<br>
+    <input type="radio" id = "sí" name = "sí" value="1"onchange = "show(this.value)">
+    <label for="sí">Sí</label><br>
+
+
+  <div id ="seccionGustos" class ="hidden">
+            <label for="color">Color Favorito:</label><br>
+            <select id="color" name="color">
+                <option value="rojo">Rojo</option>
+                <option value="azul">Azul</option>
+                <option value="verde">Verde</option>
+                <option value="negro">Negro</option>
+                <option value="blanco">Blanco</option>
+
+            </select><br>
+
+            <label for="marca">Marca de Automóvil Favorita:</label><br>
+            <select id="marca" name="marca">
+                <option value="Toyota">Toyota</option>
+                <option value="Ford">Ford</option>
+                <option value="Honda">Honda</option>
+                <option value="Chevrolet">Chevrolet</option>
+                <option value="BMW">BMW</option>
+
+            </select><br>
+
+            <label for="estilo">Estilo de Automóvil Favorito:</label><br>
+            <select id="estilo" name="estilo">
+                <option value="Sedán">Sedán</option>
+                <option value="SUV">SUV</option>
+                <option value="Deportivo">Deportivo</option>
+                <option value="Camioneta">Camioneta</option>
+                <option value="Familiar">Familiar</option>
+
+            </select><br>
+
+            <label for="modelo">Modelo de Automóvil Favorito:</label><br>
+            <select id="modelo" name="modelo">
+                <option value="Corolla">Corolla</option>
+                <option value="Civic">Civic</option>
+                <option value="Mustang">Mustang</option>
+                <option value="Camaro">Camaro</option>
+                <option value="Accord">Accord</option>
+
+            </select><br>
+
+            <label for="priceRange">Rango de Precio:</label>
+            <input type="range" id="priceRange" name="priceRange" min="0" max="100000" step="1000" value="0" oninput="updateMinMax(this)">
+            <span id="minValue">0</span>
+            <span id="maxValue">100000</span>
+</div>
+
+  <button type="submit">Registrar</button>
+</form>
+
+</body>
+</html>
