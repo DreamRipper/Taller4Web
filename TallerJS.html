@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <link rel="shortcut icon" href="http://designm.ag/favicon.ico">
+    <link rel="icon" href="http://designm.ag/favicon.ico">
+    <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" media="all" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="http://fonts.googleapis.com/css?family=Acme">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>  
     
 <style>
 
@@ -14,8 +20,9 @@ body {
 }
 
 form {
-  width: 300px;
+  width: 400px;
   margin: 0 auto;
+  text-align: left;
 }
 
 h2 {
@@ -24,13 +31,26 @@ h2 {
   margin-bottom: 10px;
 }
 
+h3 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 input, select {
-  width: auto;
-  padding: 5px 20px;
+  display: inline-block;
+  position: relative;
+  vertical-align: auto;
+  width: 100%;
+  padding: 5px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+}
+
+select {
+  padding: 5px 125px;
 }
 
 button {
@@ -50,13 +70,24 @@ button:hover {
 .hidden{
     display: none;
 }
+
+.minvalue {
+  visibility: hidden;
+  color: aquamarine;
+}
+
+.radio {
+  width: auto;
+}
+.centrar {
+  text-align: center;
+}
+
 </style>
 </head>
 <body>
 
   <script>
-    var ccpaswd = document.getElementById(ccpaswd);
-    var ccpaswd2 = document.getElementById(ccpaswd2);
 
     function validateInput(input) {
       var value = input.value;
@@ -72,21 +103,80 @@ button:hover {
       return /^\d+$/.test(value);
     }
 
-    function validatePassword(input){
-        if(/[A-Z]/.test(input) != true || /[0-9]/.test(input) != true || /[#,%,/,&]/.test(input) != true ){
-            alert("La contraseña debe contener mayúsculas, números y al menos uno de los siguientes carácteres: #,%,/,&\n");
-            return false;
-            
+    function validateName(){
+      var tamaño_nombre = document.getElementById('nombre').value;
+      if(tamaño_nombre.length > 25){
+        alert('el nombre debe tener menos de 26 caracteres.');
+        return false;
+      }
+      return true;
+    }
+
+    function validateLast(){
+      var tamaño_apellido = document.getElementById('apellido').value;
+      if(tamaño_apellido.length > 25){
+        alert('el apellido tiene más de 25 caracteres.');
+        return false;
+      }
+      return true;
+    }
+
+    function validateCC(){
+      var tamaño_ccusuario = document.getElementById('ccusuario').value;
+      if (/[^a-zA-Z0-9]/.test(tamaño_ccusuario) == true){
+        alert('el login usuario no debe tener caracteres extraños.');
+        return false;
+      }
+      else if(tamaño_ccusuario.length > 20){
+        alert('el login usuario debe tener menos de 20 dígitos.');
+        return false;
+      }
+      else if (tamaño_ccusuario.length < 10){
+        alert('el login usuario debe tener más de 10 dígitos.');
+        return false;
+      }
+      return true;
+    }
+
+    function validateAddress() {
+      var direccion = document.getElementById('direccion').value;
+      var regex = /^(cll|cra|av|anv|trans)/i;
+
+      if (!regex.test(direccion)) {
+        alert('Por favor, comienza la dirección con una de las siguientes opciones: cll, cra, av, anv, trans');
+        return false;
+      }
+      return true;
+    }
+  
+    function validatePassword(){
+        var contraseña = document.getElementById('ccpaswd').value;
+        if(/[A-Z]/.test(contraseña) == true && /[0-9]/.test(contraseña) == true && /[#,%,/,&]/.test(contraseña) == true){
+            return true;   
         }
-        return true;
+        alert("La contraseña debe contener mayúsculas, números y al menos uno de los siguientes carácteres: #,%,/,&\n");
+        return false;
     }
 
     function equal(){
-        if(ccpaswd != ccpasw2){
-            alert("Las contraseñas no coinciden.\n");
-            return false;
-        }
-        return true;
+
+      var ccpaswd = document.getElementById('ccpaswd').value;
+      var ccpasw2 = document.getElementById('ccpaswd2').value;
+
+      if(ccpaswd != ccpasw2){
+          alert("Las contraseñas no coinciden.\n");
+          return false;
+      }
+      return true;
+    }
+
+    function validateEmail(){
+      var email = document.getElementById('email').value;
+      if(email.length > 120){
+        alert('el email debe tener menos de 121 caracteres.');
+        return false;
+      }
+      return true;
     }
 
     function show(radio){
@@ -99,23 +189,42 @@ button:hover {
         }
     }
 
-    function updateMinMax(input) {
-        var value = input.value.split(',');
-        var minValue = value[0];
-        var maxValue = value[1];
-        document.getElementById('minValue').textContent = minValue;
-        document.getElementById('maxValue').textContent = maxValue;
+    var min_value = 0;
+    var max_value = 100000;
+    $(function(){
+    $('#rangeslider').slider({
+      range: true,
+      min: 0,
+      max: 100000,
+      values: [ 30000, 70000],
+      slide: function( event, ui ) {
+        $('#rangeval').html(ui.values[0]+" - "+ui.values[1]);
+        min_value = ui.values[0];
+        max_value = ui.values[1];
+        }
+      });
+     });
+    
+    function minandmax(){
+      document.getElementById('minvalue').value = min_value;
+      document.getElementById('maxvalue').value = max_value;
+      return true;
+    }
+
+    function validateAll(){
+      return validatePassword() && equal() && validateAddress() && validateName() &&
+       validateLast() && validateCC() && validateEmail() && minandmax();  
     }
     </script>
 
 <h2>Formulario de Registro</h2>
-
-<form action="TallerJS.html" method="post" onsubmit="return validatePassword() && equal()">
+<!--method="post"-->
+<form action="TallerJS.html" onsubmit="return validateAll()">
   <label for="id_usr">ID Usuario</label><br>
-  <input type="text" id="id_usr" name="id_usr" maxlength="11" oninput="validateInput(this)">
+  <input type="text" id="id_usr" name="id_usr" maxlength="11" oninput="validateInput(this)" width="auto">
   <br>
   <label for="id_pais">ID País</label><br>
-  <select id="id_pais" name="id_pais">
+  <select id="id_pais" name="id_pais" class="centrar">
         <option value="1">Colombia</option>
         <option value="2">Argentina</option>
         <option value="3">Venezuela</option>
@@ -149,37 +258,38 @@ button:hover {
   </select>
   <br>
   <label for="nombre">Nombre</label><br>
-  <input type="text" id="nombre" name="nombre" maxlength="25">
+  <input type="text" id="nombre" name="nombre" required>
   <br>
   <label for="apellido">Apellido</label><br>
-  <input type="text" id="apellido" name="apellido" maxlength="25">
+  <input type="text" id="apellido" name="apellido" required>
   <br>
   <label for="direccion">Direccion</label><br>
-  <input type="text" id="direccion" name="direccion" maxlength="45">
+  <input type="text" id="direccion" name="direccion" maxlength="45" minlength="3">
   <br>
-  <label for="ccusuario">Cedula Usuario</label><br>
-  <input type="text" id="ccusuario" name="ccusuario" maxlength="20">
+  <label for="ccusuario">Login Usuario</label><br>
+  <input type="text" id="ccusuario" name="ccusuario" required>
   <br>
   <label for="ccpaswd">Contraseña</label><br>
-  <input type="password" id="ccpaswd" name="ccpaswd" maxlength="20"minlength='15' required>
+  <!--maxlength="20"minlength='15'-->
+  <input type="password" id="ccpaswd" name="ccpaswd" required>
   <br>
   <label for="ccpaswd2">Confirmar Contraseña</label><br>
-  <input type="password" id="ccpaswd2" name="ccpaswd2" maxlength="20"minlength='15' required>
+  <input type="password" id="ccpaswd2" name="ccpaswd2" required>
   <br>
-  <label for="ccusuario">Email</label><br>
-  <input type="email" id="ccusuario" name="ccusuario" maxlength="120" required>
+  <label for="email">Email</label><br>
+  <input type="email" id="email" name="email" required>
   <br>
   <label for="telefono">Teléfono</label><br>
   <input type="text" id="telefono" name="telefono" maxlength="20">
   <br>
   ¿Desea registrar sus gustos?<br>
-    <input type="radio" id = "sí" name = "sí" value="1"onchange = "show(this.value)">
+    <input type="radio" id = "sí" name = "sí" value="1"onchange = "show(this.value)" class="radio">
     <label for="sí">Sí</label><br>
 
 
   <div id ="seccionGustos" class ="hidden">
             <label for="color">Color Favorito:</label><br>
-            <select id="color" name="color">
+            <select id="color" name="color" class="centrar">
                 <option value="rojo">Rojo</option>
                 <option value="azul">Azul</option>
                 <option value="verde">Verde</option>
@@ -189,7 +299,7 @@ button:hover {
             </select><br>
 
             <label for="marca">Marca de Automóvil Favorita:</label><br>
-            <select id="marca" name="marca">
+            <select id="marca" name="marca" class="centrar">
                 <option value="Toyota">Toyota</option>
                 <option value="Ford">Ford</option>
                 <option value="Honda">Honda</option>
@@ -199,7 +309,7 @@ button:hover {
             </select><br>
 
             <label for="estilo">Estilo de Automóvil Favorito:</label><br>
-            <select id="estilo" name="estilo">
+            <select id="estilo" name="estilo" class="centrar">
                 <option value="Sedán">Sedán</option>
                 <option value="SUV">SUV</option>
                 <option value="Deportivo">Deportivo</option>
@@ -209,7 +319,7 @@ button:hover {
             </select><br>
 
             <label for="modelo">Modelo de Automóvil Favorito:</label><br>
-            <select id="modelo" name="modelo">
+            <select id="modelo" name="modelo" class="centrar">
                 <option value="Corolla">Corolla</option>
                 <option value="Civic">Civic</option>
                 <option value="Mustang">Mustang</option>
@@ -218,14 +328,25 @@ button:hover {
 
             </select><br>
 
-            <label for="priceRange">Rango de Precio:</label>
-            <input type="range" id="priceRange" name="priceRange" min="0" max="100000" step="1000" value="0" oninput="updateMinMax(this)">
-            <span id="minValue">0</span>
-            <span id="maxValue">100000</span>
+            <label for="minvalue">Rango de Precio:</label>
+            
+            
+
+            <h3>Rango de precio</h3>
+            <div id="rangedval">
+            Range Value: <span id="rangeval">30000 - 70000</span>
+            </div>
+
+            <div id="rangeslider"></div>
+
+            <input type="hidden" id="minvalue" name="minvalue" value="valor1">
+            <input type="hidden" id="maxvalue" name="maxvalue" value="valor2">
 </div>
 
   <button type="submit">Registrar</button>
 </form>
+
+ 
 
 </body>
 </html>
